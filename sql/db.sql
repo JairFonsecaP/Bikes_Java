@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `bikes`.`Product` (
   `Desciption` LONGTEXT NOT NULL,
   `Price` DECIMAL NOT NULL,
   `Stock` INT NOT NULL,
+  `Sold` INT NOT NULL DEFAULT 0,
   `Image` VARCHAR(300) NOT NULL,
   `Brand_Id` INT NOT NULL,
   `Category_Id` INT NOT NULL,
