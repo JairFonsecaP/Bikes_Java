@@ -1,6 +1,7 @@
 package com.isi.controllers;
 
 import jakarta.annotation.Resource;
+import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -9,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import javax.sql.DataSource;
+
+import org.apache.tomcat.util.descriptor.web.LoginConfig;
 
 import com.isi.db.BikesDbUtil;
 
@@ -25,6 +28,7 @@ public class BikesControllerServlet extends HttpServlet {
     private DataSource dataSource;
 	
 	@Override
+	
     public void init() throws ServletException
     {
     	super.init();
@@ -49,6 +53,7 @@ public class BikesControllerServlet extends HttpServlet {
 			switch (theCommand) 
 			{
 				case "INDEX": index(request, response); break;
+				case "LOGIN": login(request, response); break;			
 				default: index(request, response);
 			}
 		} 
@@ -76,7 +81,11 @@ public class BikesControllerServlet extends HttpServlet {
 	
 	private void index(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/index.jsp");
+		dispatcher.forward(request, response);
+	}
+	private void login(HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
 	}
 
 }
