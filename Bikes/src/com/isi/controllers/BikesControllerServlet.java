@@ -10,7 +10,7 @@ import java.io.IOException;
 
 import javax.sql.DataSource;
 
-import com.isi.db.BikesDbUtil;
+import com.isi.dao.ProductDAO;
 
 /**
  * Servlet implementation class BikesControllerServlet
@@ -19,7 +19,7 @@ import com.isi.db.BikesDbUtil;
 public class BikesControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-	private BikesDbUtil bikesDbUtil;
+	private ProductDAO bikesDbUtil;
 	
 	@Resource(name="jdbc/bikes")
     private DataSource dataSource;
@@ -30,7 +30,7 @@ public class BikesControllerServlet extends HttpServlet {
     	super.init();
     	try
     	{
-    		bikesDbUtil = new BikesDbUtil(dataSource);
+    		bikesDbUtil = new ProductDAO(dataSource);
     	}
     	catch (Exception e) {
 			throw new ServletException(e);
