@@ -21,7 +21,7 @@ public class ProductDAO {
 		this.dataSource = dataSource;
 	}
 
-	public List<Product> getMustSoldProductsList() throws SQLException {
+	public List<Product> getMostSoldProductsList() throws SQLException {
 
 		List<Product> products = new ArrayList<>();
 
@@ -32,7 +32,8 @@ public class ProductDAO {
 		try {
 			myConn = dataSource.getConnection();
 
-			String sql = "SELECT product.Name, " 
+			String sql = "SELECT product.Id, "
+					+ "	   product.Name, " 
 					+ "    product.Desciption, " 
 					+ "    product.Price, "
 					+ "    product.Stock, " 
@@ -46,7 +47,7 @@ public class ProductDAO {
 					+ "    category.image as 'CategoryImage' "
 					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
 					+ "JOIN category ON product.Category_Id = category.Id " + "ORDER BY product.sold DESC "
-					+ "LIMIT 3 ";
+					+ "LIMIT 3; ";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
@@ -87,8 +88,9 @@ public class ProductDAO {
 		try {
 			myConn = dataSource.getConnection();
 
-			String sql = "SELECT product.Name, " 
-			+ "    product.Desciption, " 
+			String sql = "SELECT product.Id,  "
+					+ "	   product.Name, " 
+					+ "    product.Desciption, " 
 					+ "    product.Price, "
 					+ "    product.Stock, " 
 					+ "    product.Sold, " 
@@ -100,7 +102,7 @@ public class ProductDAO {
 					+ "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "JOIN category ON product.Category_Id = category.Id ";
+					+ "JOIN category ON product.Category_Id = category.Id; ";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);

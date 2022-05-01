@@ -17,15 +17,17 @@
 	    <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
 	  </div>
 	  <div class="carousel-inner">
-	  <forEach var="product" items="${TOP3_LIST}">
-	    <div class="carousel-item active">
+	  
+	  <c:forEach var="product" items="${TOP3_LIST}">
+	  
+	    <div class="carousel-item <c:if test="${product.id eq TOP3_LIST[0].id}">active</c:if>">
 	      <img src="${product.image}" class="d-block w-100" alt="${product.name}">
 	      <div class="carousel-caption d-none d-md-block">
 	        <h5>${product.name}</h5>
 	        <p>${product.description}</p>
 	      </div>
 	    </div>
-	   </forEach>
+	   </c:forEach>
 	  </div>
 	  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
 	    <span class="carousel-control-prev-icon" aria-hidden="true"></span>

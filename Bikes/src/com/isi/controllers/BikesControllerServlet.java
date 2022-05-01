@@ -8,11 +8,13 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 import javax.sql.DataSource;
 
 
 import com.isi.dao.ProductDAO;
+import com.isi.data.Product;
 
 /**
  * Servlet implementation class BikesControllerServlet
@@ -80,6 +82,9 @@ public class BikesControllerServlet extends HttpServlet {
 	
 	private void index(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
+		List<Product> productsMostSold = bikesDbUtil.getMostSoldProductsList();		
+		request.setAttribute("TOP3_LIST", productsMostSold);
+		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/index.jsp");
 		dispatcher.forward(request, response);
 	}
