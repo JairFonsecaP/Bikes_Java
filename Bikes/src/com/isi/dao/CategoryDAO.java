@@ -63,7 +63,7 @@ public class CategoryDAO {
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
-			while (myRs.next()) {
+			if (myRs.next()) {
 				String name = myRs.getString("Name");
 				String image = myRs.getString("Image");
 
