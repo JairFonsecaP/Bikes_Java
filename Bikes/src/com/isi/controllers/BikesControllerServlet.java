@@ -48,7 +48,7 @@ public class BikesControllerServlet extends HttpServlet {
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try 
 		{
 			String theCommand = request.getParameter("command");
@@ -57,7 +57,8 @@ public class BikesControllerServlet extends HttpServlet {
 			switch (theCommand) 
 			{
 				case "INDEX": index(request, response); break;
-				case "LOGIN": login(request, response); break;			
+				case "LOGIN": login(request, response); break;	
+				case "CATEGORIES": productsByCategory(request, response); break;
 				default: index(request, response);
 			}
 		} 
@@ -94,6 +95,18 @@ public class BikesControllerServlet extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/index.jsp");
 		dispatcher.forward(request, response);
 	}
+	
+	private void productsByCategory(HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		int farmId = Integer.parseInt(request.getParameter("categoryId"));
+		List<Product> productsbyCategory = bikesDbUtil.getAllProductsByCategory(farmId);
+		
+		request.setAttribute("PRODUCT_LIST", productsbyCategory);
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/category.jsp");
+		dispatcher.forward(request, response);
+	}
+	
 	private void login(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 	}

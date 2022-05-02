@@ -20,6 +20,65 @@ public class ProductDAO {
 	public ProductDAO(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
+	
+	public List<Product> getAllProductsByCategory(int categoryId) throws SQLException {
+
+		List<Product> products = new ArrayList<>();
+
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+
+		try {
+			myConn = dataSource.getConnection();
+
+			String sql = "SELECT product.Id,  "
+					+ "	   product.Name, " 
+					+ "    product.Desciption, " 
+					+ "    product.Price, "
+					+ "    product.Stock, " 
+					+ "    product.Sold, " 
+					+ "    product.Image, " 
+					+ "    product.Brand_Id, "
+					+ "    brand.name as 'BrandName', " 
+					+ "    brand.image as 'BrandImage', "
+					+ "    product.Category_Id, " 
+					+ "    category.name as 'CategoryName', "
+					+ "    category.image as 'CategoryImage' "
+					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
+					+ "	   JOIN category ON product.Category_Id = category.Id"
+					+ "	   WHERE category.id = ? ; ";
+
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setInt(1, categoryId);
+			
+			// execute query
+			myRs = myStmt.executeQuery();
+			while (myRs.next()) {
+				int productId = myRs.getInt("Id");
+				String productName = myRs.getString("Name");
+				String productDesciption = myRs.getString("Desciption");
+				double price = myRs.getDouble("Price");
+				int stock = myRs.getInt("Stock");
+				int sold = myRs.getInt("Sold");
+				String image = myRs.getString("Image");
+				int brandId = myRs.getInt("Brand_Id");
+				String brandName = myRs.getString("BrandName");
+				String brandImage = myRs.getString("BrandImage");
+				int category_Id = myRs.getInt("Brand_Id");
+				String categoryName = myRs.getString("CategoryName");
+				String categoryImage = myRs.getString("CategoryImage");
+
+				Product product = new Product(productId, productName, productDesciption, price, stock, sold, image,
+						new Brand(brandId, brandName, brandImage),
+						new Category(category_Id, categoryName, categoryImage));
+				products.add(product);
+			}
+			return products;
+		} finally {
+			close(myConn, myStmt, myRs);
+		}
+	}
 
 	public List<Product> getMostSoldProductsList() throws SQLException {
 
@@ -62,7 +121,7 @@ public class ProductDAO {
 				int brandId = myRs.getInt("Brand_Id");
 				String brandName = myRs.getString("BrandName");
 				String brandImage = myRs.getString("BrandImage");
-				int categoryId = myRs.getInt("Brand_Id");
+				int categoryId = myRs.getInt("Category_Id");
 				String categoryName = myRs.getString("CategoryName");
 				String categoryImage = myRs.getString("CategoryImage");
 
@@ -117,7 +176,7 @@ public class ProductDAO {
 				int brandId = myRs.getInt("Brand_Id");
 				String brandName = myRs.getString("BrandName");
 				String brandImage = myRs.getString("BrandImage");
-				int categoryId = myRs.getInt("Brand_Id");
+				int categoryId = myRs.getInt("Category_Id");
 				String categoryName = myRs.getString("CategoryName");
 				String categoryImage = myRs.getString("CategoryImage");
 

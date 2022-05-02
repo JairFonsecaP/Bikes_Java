@@ -51,7 +51,11 @@
 	        <h5 class="card-title">${category.name}</h5>
 	      </div>
 	      <div class="card-footer" >
-	        <a href="#" class="btn btn-primary">See all products for ${category.name} category</a>
+	      	<c:url var="tempLink" value="BikesControllerServlet">
+					<c:param name="command" value="CATEGORIES" />
+					<c:param name="categoryId" value="${category.id}" />
+			</c:url>
+	        <a href="${tempLink}" class="btn btn-primary">See all products for ${category.name} category</a>
 	      </div>
 	    </div>
 	  </div>
