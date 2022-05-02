@@ -12,8 +12,9 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-
+import com.isi.dao.CategoryDAO;
 import com.isi.dao.ProductDAO;
+import com.isi.data.Category;
 import com.isi.data.Product;
 
 /**
@@ -24,6 +25,7 @@ public class BikesControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 	private ProductDAO bikesDbUtil;
+	private CategoryDAO categoryDbUtil;
 	
 	@Resource(name="jdbc/bikes")
     private DataSource dataSource;
@@ -36,6 +38,7 @@ public class BikesControllerServlet extends HttpServlet {
     	try
     	{
     		bikesDbUtil = new ProductDAO(dataSource);
+    		categoryDbUtil = new CategoryDAO(dataSource);
     	}
     	catch (Exception e) {
 			throw new ServletException(e);
@@ -82,8 +85,11 @@ public class BikesControllerServlet extends HttpServlet {
 	
 	private void index(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
-		List<Product> productsMostSold = bikesDbUtil.getMostSoldProductsList();		
+		List<Product> productsMostSold = bikesDbUtil.getMostSoldProductsList();	
+		List<Category> categoriesList = categoryDbUtil.getAllCategoriesList();
+		
 		request.setAttribute("TOP3_LIST", productsMostSold);
+		request.setAttribute("CATEGORIES_LIST", categoriesList);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/index.jsp");
 		dispatcher.forward(request, response);

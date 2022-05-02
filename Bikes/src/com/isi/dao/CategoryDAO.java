@@ -30,7 +30,7 @@ public class CategoryDAO {
 			myConn = dataSource.getConnection();
 
 			String sql = "SELECT Id, Name, Image "
-					+ "FROM category ";
+					+ "FROM category; ";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
