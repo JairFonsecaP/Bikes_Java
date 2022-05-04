@@ -19,8 +19,7 @@ CREATE TABLE IF NOT EXISTS `bikes`.`Brand` (
   `Id` INT NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(45) NOT NULL,
   `Image` VARCHAR(300) NOT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
+  PRIMARY KEY (`Id`))
 ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `Product`;
@@ -35,18 +34,12 @@ CREATE TABLE IF NOT EXISTS `bikes`.`Product` (
   `Brand_Id` INT NOT NULL,
   `Category_Id` INT NOT NULL,
   PRIMARY KEY (`Id`),
-  INDEX `fk_Product_Brand_idx` (`Brand_Id` ASC) VISIBLE,
-  INDEX `fk_Product_Category1_idx` (`Category_Id` ASC) VISIBLE,
   CONSTRAINT `fk_Product_Brand`
     FOREIGN KEY (`Brand_Id`)
-    REFERENCES `mydb`.`Brand` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    REFERENCES `mydb`.`Brand` (`Id`),
   CONSTRAINT `fk_Product_Category1`
     FOREIGN KEY (`Category_Id`)
-    REFERENCES `mydb`.`Category` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `mydb`.`Category` (`Id`))
 ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `orders`;
