@@ -59,7 +59,8 @@ public class BikesControllerServlet extends HttpServlet {
 				case "INDEX": index(request, response); break;
 				case "LOGIN": login(request, response); break;	
 				case "CATEGORIES": productsByCategory(request, response); break;
-				default: index(request, response);
+				case "PRODUCT": productById(request, response); break;
+				default: index(request, response); 
 			}
 		} 
 		catch (Exception e) 
@@ -104,6 +105,16 @@ public class BikesControllerServlet extends HttpServlet {
 		request.setAttribute("PRODUCT_LIST", productsbyCategory);
 		
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/category.jsp");
+		dispatcher.forward(request, response);
+	}
+	private void productById(HttpServletRequest request, HttpServletResponse response) throws Exception
+	{
+		int productId = Integer.parseInt(request.getParameter("productId"));
+		Product product = bikesDbUtil.getProductById(productId);
+		request.setAttribute("product", product);
+		System.out.println(product.getId());
+		
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/product.jsp");
 		dispatcher.forward(request, response);
 	}
 	

@@ -10,19 +10,25 @@
 <title>${PRODUCT_LIST[0].category.name}</title>
 </head>
 <body>
+	<jsp:include page="header.jsp"></jsp:include>
 	<h1>Category: ${PRODUCT_LIST[0].category.name}</h1>
 	<h3>Products</h3>
 	
 	<div class="row row-cols-1 row-cols-md-3 g-4">
   
   <c:forEach var="product" items="${PRODUCT_LIST}">
+  <c:url var="tempLink" value="BikesControllerServlet">
+					<c:param name="command" value="PRODUCT" />
+					<c:param name="productId" value="${product.id}" />
+			</c:url>
+  
   <div class="col">
     <div class="card">
       <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 200px;">
       <div class="card-body">
         <h5 class="card-title">${product.name}</h5>
         <p class="card-text">${product.description}</p>
-        <a href="#" class="btn btn-primary">Buy now</a>
+        <a href="${tempLink}" class="btn btn-primary">Buy now</a>
       </div>
     </div>
   </div>

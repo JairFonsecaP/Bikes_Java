@@ -52,7 +52,6 @@ public class ProductDAO {
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, categoryId);
 			
-			// execute query
 			myRs = myStmt.executeQuery();
 			while (myRs.next()) {
 				int productId = myRs.getInt("Id");
@@ -194,7 +193,7 @@ public class ProductDAO {
 	public Product getProductById(int productId) throws SQLException {
 
 		Connection myConn = null;
-		Statement myStmt = null;
+		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
 		Product product = null;
 
@@ -214,10 +213,12 @@ public class ProductDAO {
 					+ "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "JOIN category ON product.Category_Id = category.Id " + "WHERE product.ID = " + productId;
+					+ "JOIN category ON product.Category_Id = category.Id " + "WHERE product.ID = ? ;";
 
-			myStmt = myConn.createStatement();
-			myRs = myStmt.executeQuery(sql);
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setInt(1, productId);
+			
+			myRs = myStmt.executeQuery();
 			while (myRs.next()) {
 				String productName = myRs.getString("Name");
 				String productDesciption = myRs.getString("Desciption");
@@ -228,7 +229,7 @@ public class ProductDAO {
 				int brandId = myRs.getInt("Brand_Id");
 				String brandName = myRs.getString("BrandName");
 				String brandImage = myRs.getString("BrandImage");
-				int categoryId = myRs.getInt("Brand_Id");
+				int categoryId = myRs.getInt("Category_Id");
 				String categoryName = myRs.getString("CategoryName");
 				String categoryImage = myRs.getString("CategoryImage");
 
