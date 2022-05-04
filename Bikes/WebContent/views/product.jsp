@@ -27,7 +27,7 @@
                         $${product.price}
                     </h2>
                     
-                    <button class="btn btn-primary btn-rounded">Buy Now</button>
+                    <button class="btn btn-primary btn-rounded">Add to cart</button>
                     <button class="btn btn-primary btn-rounded">Add to favorites</button>
                 </div>
                 
