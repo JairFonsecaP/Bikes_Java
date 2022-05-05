@@ -55,7 +55,7 @@
 					<c:param name="command" value="CATEGORIES" />
 					<c:param name="categoryId" value="${category.id}" />
 			</c:url>
-	        <a href="${tempLink}" class="btn btn-primary">See all products for ${category.name} category</a>
+	        <a href="${tempLink}" class="btn btn-primary">See all products</a>
 	      </div>
 	    </div>
 	  </div>
