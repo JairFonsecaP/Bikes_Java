@@ -16,11 +16,12 @@
 	      	
 	      	
 	        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-	        <c:url var="loginLink" value="StudentControllerServlet">
-						<c:param name="command" value="LOGIN" />
-			</c:url>
-	        <a href="${loginLink}"><button class="btn btn-outline-success" type="submit">Login</button></a>
-	      </form>
+	        <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Login</button>
+				<div class="modal fade" id="exampleModal" tabindex="-1"
+					aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<jsp:include page="login.jsp"></jsp:include>
+				</div>
+			</form>
 	    </div>
 	</nav>
 	

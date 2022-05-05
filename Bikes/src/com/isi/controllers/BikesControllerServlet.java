@@ -12,8 +12,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import com.isi.dao.AdminDAO;
 import com.isi.dao.CategoryDAO;
 import com.isi.dao.ProductDAO;
+import com.isi.data.Admin;
 import com.isi.data.Category;
 import com.isi.data.Product;
 
@@ -26,6 +28,7 @@ public class BikesControllerServlet extends HttpServlet {
        
 	private ProductDAO bikesDbUtil;
 	private CategoryDAO categoryDbUtil;
+	private AdminDAO adminDAO;
 	
 	@Resource(name="jdbc/bikes")
     private DataSource dataSource;
@@ -39,6 +42,7 @@ public class BikesControllerServlet extends HttpServlet {
     	{
     		bikesDbUtil = new ProductDAO(dataSource);
     		categoryDbUtil = new CategoryDAO(dataSource);
+    		adminDAO = new AdminDAO(dataSource);
     	}
     	catch (Exception e) {
 			throw new ServletException(e);
@@ -118,8 +122,20 @@ public class BikesControllerServlet extends HttpServlet {
 		dispatcher.forward(request, response);
 	}
 	
-	private void login(HttpServletRequest request, HttpServletResponse response) throws Exception
-	{
+	private void login(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		String username = request.getParameter("username");
+		String password = request.getParameter("password");
+		
+		if(adminDAO.authenticateAdmin(username, password)) {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
+			request.removeAttribute("username");
+			dispatcher.forward(request, response);
+		}else {
+			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/login.jsp");
+			request.setAttribute("error", true);
+			request.removeAttribute("password");
+			dispatcher.forward(request, response);
+		}
 	}
 
 }

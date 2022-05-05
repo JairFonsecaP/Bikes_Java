@@ -22,7 +22,7 @@ public class AdminDAO {
 
 		Admin admin = null;
 		Connection myConn = null;
-		Statement myStmt = null;
+		PreparedStatement myStmt = null;
 		ResultSet myRs = null;
 
 		try {
@@ -33,11 +33,14 @@ public class AdminDAO {
 					+ "    admins.Password, "
 					+ "    admins.Salt "
 					+ "FROM bikes.admins "
-					+ "WHERE Username = " + adminUsername;
-
-			myStmt = myConn.createStatement();
-			myRs = myStmt.executeQuery(sql);
-			if (myRs.next()) {
+					+ "WHERE Username = ? ;";
+					
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setString(1, adminUsername);
+			
+			
+			myRs = myStmt.executeQuery();
+			while (myRs.next()) {
 				int adminId = myRs.getInt("Id");
 				String name = myRs.getString("Name");
 				String password = myRs.getString("Password");
@@ -54,7 +57,7 @@ public class AdminDAO {
 	public void addAdmin(Admin admin) throws Exception {
 		
 		admin = encryptPassword(admin); 
-		
+		System.out.println("paso");
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
 		
@@ -82,6 +85,8 @@ public class AdminDAO {
 		String saltvalue = PasswordEncrypt.getSaltvalue(30);
 		admin.setPassword(PasswordEncrypt.generateSecurePassword(admin.getPassword(), saltvalue));
 		admin.setSalt(saltvalue);
+		System.out.println(admin.getPassword());
+		System.out.println(admin.getSalt());
 		return admin;
 	}
 	
