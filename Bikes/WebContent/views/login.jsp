@@ -13,7 +13,7 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<form action="BikesControllerServlet" method="post"
+	<form action="BikesControllerServlet" method="POST"
 		class="was-validated">
 
 		<div class="modal-dialog">
@@ -39,11 +39,9 @@
 						<p class="text-danger">Username or Password invalid.</p>
 					</c:if>
 				</div>
-				<c:url var="tempLink" value="BikesControllerServlet">
-					<c:param name="command" value="INDEX" />
-				</c:url>
+				
 				<div class="modal-footer">
-					<a href="${tempLink}" class="btn btn-secondary">Close</a>
+					
 					<button type="submit" class="btn btn-primary">Login</button>
 					<input type="hidden" name="command" value="LOGIN"></input>
 				</div>

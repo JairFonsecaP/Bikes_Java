@@ -12,7 +12,7 @@
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 	  <div class="container-fluid">
 	    <a class="navbar-brand" href="BikesControllerServlet">Bikes</a>    
-	      <form class="d-flex"> 	
+	      <div class="d-flex"> 	
 	      	
 	      	
 	        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -21,7 +21,7 @@
 					aria-labelledby="exampleModalLabel" aria-hidden="true">
 					<jsp:include page="login.jsp"></jsp:include>
 				</div>
-			</form>
+			</div>
 	    </div>
 	</nav>
 	

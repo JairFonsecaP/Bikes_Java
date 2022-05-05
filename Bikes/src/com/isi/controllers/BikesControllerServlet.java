@@ -19,9 +19,7 @@ import com.isi.data.Admin;
 import com.isi.data.Category;
 import com.isi.data.Product;
 
-/**
- * Servlet implementation class BikesControllerServlet
- */
+
 @WebServlet("/BikesControllerServlet")
 public class BikesControllerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -49,9 +47,6 @@ public class BikesControllerServlet extends HttpServlet {
 		}
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try 
 		{
@@ -61,7 +56,6 @@ public class BikesControllerServlet extends HttpServlet {
 			switch (theCommand) 
 			{
 				case "INDEX": index(request, response); break;
-				case "LOGIN": login(request, response); break;	
 				case "CATEGORIES": productsByCategory(request, response); break;
 				case "PRODUCT": productById(request, response); break;
 				default: index(request, response); 
@@ -74,20 +68,24 @@ public class BikesControllerServlet extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		try 
+		{
+			String theCommand = request.getParameter("command");
+			if (theCommand == null) 
+				theCommand = "INDEX";
+			switch (theCommand) 
+			{
+				case "LOGIN": login(request, response); break;	
+			}
+		} 
+		catch (Exception e) 
+		{
+			System.out.println(e.getMessage());
+			throw new ServletException(e);
+		}
 	}
 
-	/**
-	 * @see HttpServlet#doDelete(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
 	
 	private void index(HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
