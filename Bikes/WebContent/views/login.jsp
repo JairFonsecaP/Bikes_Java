@@ -32,7 +32,7 @@
 					</div>
 					<div class="mb-3">
 						<label for="password" class="form-label">Password</label> <input
-							type="password" class="form-control" " name="password" required>
+							type="password" class="form-control" name="password" required>
 						<div class="invalid-feedback">Please enter a password</div>
 					</div>
 					<c:if test="${error}">

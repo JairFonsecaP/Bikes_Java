@@ -47,7 +47,7 @@ public class ProductDAO {
 					+ "    category.image as 'CategoryImage' "
 					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
 					+ "	   JOIN category ON product.Category_Id = category.Id"
-					+ "	   WHERE category.id = ? ; ";
+					+ "	   WHERE category.id = ? AND product.stock > 0 ; ";
 
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, categoryId);
@@ -103,9 +103,11 @@ public class ProductDAO {
 					+ "    product.Category_Id, " 
 					+ "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
-					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "JOIN category ON product.Category_Id = category.Id " + "ORDER BY product.sold DESC "
-					+ "LIMIT 3; ";
+					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
+					+ "	   JOIN category ON product.Category_Id = category.Id "
+					+ "	   WHERE product.Stock > 0 " 
+					+ "	   ORDER BY product.sold DESC "
+					+ "	   LIMIT 3; ";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
@@ -159,8 +161,9 @@ public class ProductDAO {
 					+ "    product.Category_Id, " 
 					+ "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
-					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "JOIN category ON product.Category_Id = category.Id; ";
+					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
+					+ "	   JOIN category ON product.Category_Id = category.Id"
+					+ "	   WHERE product.Stock > 0;";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
@@ -213,7 +216,8 @@ public class ProductDAO {
 					+ "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "JOIN category ON product.Category_Id = category.Id " + "WHERE product.ID = ? ;";
+					+ "JOIN category ON product.Category_Id = category.Id " 
+					+ "WHERE product.ID = ? AND product.Stock > 0;";
 
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, productId);
