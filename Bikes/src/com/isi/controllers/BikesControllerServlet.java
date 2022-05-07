@@ -17,6 +17,8 @@ import javax.sql.DataSource;
 
 import com.isi.dao.AdminDAO;
 import com.isi.dao.CategoryDAO;
+import com.isi.dao.OrderDAO;
+import com.isi.dao.OrderDetailDAO;
 import com.isi.dao.ProductDAO;
 import com.isi.data.Admin;
 import com.isi.data.Category;
@@ -30,6 +32,7 @@ public class BikesControllerServlet extends HttpServlet {
 	private ProductDAO bikesDbUtil;
 	private CategoryDAO categoryDbUtil;
 	private AdminDAO adminDAO;
+	private OrderDAO orderDbUtil;
 
 	@Resource(name = "jdbc/bikes")
 	private DataSource dataSource;
@@ -42,6 +45,7 @@ public class BikesControllerServlet extends HttpServlet {
 			bikesDbUtil = new ProductDAO(dataSource);
 			categoryDbUtil = new CategoryDAO(dataSource);
 			adminDAO = new AdminDAO(dataSource);
+			orderDbUtil = new OrderDAO(dataSource);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
@@ -69,6 +73,8 @@ public class BikesControllerServlet extends HttpServlet {
 			case "CHECKOUT":
 				checkout(request, response);
 				break;
+			
+				
 			default:
 				index(request, response);
 			}
@@ -89,7 +95,9 @@ public class BikesControllerServlet extends HttpServlet {
 			case "LOGIN":
 				login(request, response);
 				break;
-
+			case "SELL":
+				sell(request, response);
+				break;
 			}
 
 		} catch (Exception e) {
@@ -182,7 +190,7 @@ public class BikesControllerServlet extends HttpServlet {
 		String size = request.getParameter("size");
 		
 		Product product = bikesDbUtil.getProductById(productId);
-		Order order = new Order(product);
+		Order order = new Order(product, size);
 		
 		request.setAttribute("Order", order);
 		request.setAttribute("Size", size);
@@ -190,6 +198,16 @@ public class BikesControllerServlet extends HttpServlet {
 
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/views/checkout.jsp");
 		dispatcher.forward(request, response);
+	}
+	private void sell(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		int productId =  Integer.parseInt(request.getParameter("productId"));
+		String size = request.getParameter("size");
+		Product product = bikesDbUtil.getProductById(productId);
+		Order order = new Order(product, size);
+		
+		orderDbUtil.addOrder(order);
+		bikesDbUtil.updateStock(product);
+		bikesDbUtil.updateSell(product);
 	}
 
 }

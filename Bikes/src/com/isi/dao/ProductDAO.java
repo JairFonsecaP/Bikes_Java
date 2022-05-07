@@ -20,7 +20,7 @@ public class ProductDAO {
 	public ProductDAO(DataSource dataSource) {
 		this.dataSource = dataSource;
 	}
-	
+
 	public List<Product> getAllProductsByCategory(int categoryId) throws SQLException {
 
 		List<Product> products = new ArrayList<>();
@@ -32,18 +32,10 @@ public class ProductDAO {
 		try {
 			myConn = dataSource.getConnection();
 
-			String sql = "SELECT product.Id,  "
-					+ "	   product.Name, " 
-					+ "    product.Desciption, " 
-					+ "    product.Price, "
-					+ "    product.Stock, " 
-					+ "    product.Sold, " 
-					+ "    product.Image, " 
-					+ "    product.Brand_Id, "
-					+ "    brand.name as 'BrandName', " 
-					+ "    brand.image as 'BrandImage', "
-					+ "    product.Category_Id, " 
-					+ "    category.name as 'CategoryName', "
+			String sql = "SELECT product.Id,  " + "	   product.Name, " + "    product.Desciption, "
+					+ "    product.Price, " + "    product.Stock, " + "    product.Sold, " + "    product.Image, "
+					+ "    product.Brand_Id, " + "    brand.name as 'BrandName', " + "    brand.image as 'BrandImage', "
+					+ "    product.Category_Id, " + "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
 					+ "	   JOIN category ON product.Category_Id = category.Id"
@@ -51,7 +43,7 @@ public class ProductDAO {
 
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, categoryId);
-			
+
 			myRs = myStmt.executeQuery();
 			while (myRs.next()) {
 				int productId = myRs.getInt("Id");
@@ -90,24 +82,14 @@ public class ProductDAO {
 		try {
 			myConn = dataSource.getConnection();
 
-			String sql = "SELECT product.Id, "
-					+ "	   product.Name, " 
-					+ "    product.Desciption, " 
-					+ "    product.Price, "
-					+ "    product.Stock, " 
-					+ "    product.Sold, " 
-					+ "    product.Image, " 
-					+ "    product.Brand_Id, "
-					+ "    brand.name as 'BrandName', " 
-					+ "    brand.image as 'BrandImage', "
-					+ "    product.Category_Id, " 
-					+ "    category.name as 'CategoryName', "
+			String sql = "SELECT product.Id, " + "	   product.Name, " + "    product.Desciption, "
+					+ "    product.Price, " + "    product.Stock, " + "    product.Sold, " + "    product.Image, "
+					+ "    product.Brand_Id, " + "    brand.name as 'BrandName', " + "    brand.image as 'BrandImage', "
+					+ "    product.Category_Id, " + "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "	   JOIN category ON product.Category_Id = category.Id "
-					+ "	   WHERE product.Stock > 0 " 
-					+ "	   ORDER BY product.sold DESC "
-					+ "	   LIMIT 3; ";
+					+ "	   JOIN category ON product.Category_Id = category.Id " + "	   WHERE product.Stock > 0 "
+					+ "	   ORDER BY product.sold DESC " + "	   LIMIT 3; ";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
@@ -148,22 +130,13 @@ public class ProductDAO {
 		try {
 			myConn = dataSource.getConnection();
 
-			String sql = "SELECT product.Id,  "
-					+ "	   product.Name, " 
-					+ "    product.Desciption, " 
-					+ "    product.Price, "
-					+ "    product.Stock, " 
-					+ "    product.Sold, " 
-					+ "    product.Image, " 
-					+ "    product.Brand_Id, "
-					+ "    brand.name as 'BrandName', " 
-					+ "    brand.image as 'BrandImage', "
-					+ "    product.Category_Id, " 
-					+ "    category.name as 'CategoryName', "
+			String sql = "SELECT product.Id,  " + "	   product.Name, " + "    product.Desciption, "
+					+ "    product.Price, " + "    product.Stock, " + "    product.Sold, " + "    product.Image, "
+					+ "    product.Brand_Id, " + "    brand.name as 'BrandName', " + "    brand.image as 'BrandImage', "
+					+ "    product.Category_Id, " + "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "	   FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "	   JOIN category ON product.Category_Id = category.Id"
-					+ "	   WHERE product.Stock > 0;";
+					+ "	   JOIN category ON product.Category_Id = category.Id" + "	   WHERE product.Stock > 0;";
 
 			myStmt = myConn.createStatement();
 			myRs = myStmt.executeQuery(sql);
@@ -203,25 +176,18 @@ public class ProductDAO {
 		try {
 			myConn = dataSource.getConnection();
 
-			String sql = "SELECT product.Name, " 
-					+ "    product.Desciption, " 
-					+ "    product.Price, "
-					+ "    product.Stock, " 
-					+ "    product.Sold, " 
-					+ "    product.Image, " 
-					+ "    product.Brand_Id, "
-					+ "    brand.name as 'BrandName', " 
-					+ "    brand.image as 'BrandImage', "
-					+ "    product.Category_Id, " 
-					+ "    category.name as 'CategoryName', "
+			String sql = "SELECT product.Name, " + "    product.Desciption, " + "    product.Price, "
+					+ "    product.Stock, " + "    product.Sold, " + "    product.Image, " + "    product.Brand_Id, "
+					+ "    brand.name as 'BrandName', " + "    brand.image as 'BrandImage', "
+					+ "    product.Category_Id, " + "    category.name as 'CategoryName', "
 					+ "    category.image as 'CategoryImage' "
 					+ "FROM product JOIN brand ON product.Brand_Id = brand.Id "
-					+ "JOIN category ON product.Category_Id = category.Id " 
+					+ "JOIN category ON product.Category_Id = category.Id "
 					+ "WHERE product.ID = ? AND product.Stock > 0;";
 
 			myStmt = myConn.prepareStatement(sql);
 			myStmt.setInt(1, productId);
-			
+
 			myRs = myStmt.executeQuery();
 			while (myRs.next()) {
 				String productName = myRs.getString("Name");
@@ -246,20 +212,20 @@ public class ProductDAO {
 			close(myConn, myStmt, myRs);
 		}
 	}
-	
+
 	public void addProduct(Product product) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
-		
+
 		try {
 			myConn = dataSource.getConnection();
-			
+
 			String sql = "INSERT INTO Product (Name, Desciption, Price, Stock, Image, Brand_Id, Category_Id) "
 					+ "VALUES( ?, ?, ?,?, ?, ?, ?)";
-			
+
 			myStmt = myConn.prepareStatement(sql);
-			
+
 			myStmt.setString(1, product.getName());
 			myStmt.setString(2, product.getDescription());
 			myStmt.setDouble(3, product.getPrice());
@@ -267,10 +233,9 @@ public class ProductDAO {
 			myStmt.setString(5, product.getImage());
 			myStmt.setInt(6, product.getBrand().getId());
 			myStmt.setInt(7, product.getCategory().getId());
-			
+
 			myStmt.execute();
-		}
-		finally {
+		} finally {
 			close(myConn, myStmt, null);
 		}
 	}
@@ -302,28 +267,124 @@ public class ProductDAO {
 			close(myConn, myStmt, null);
 		}
 	}
+
 	public void deleteProduct(int productId) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
-		
+
 		try {
-			
+
 			myConn = dataSource.getConnection();
-			
+
 			String sql = "DELETE from Product where Id=?";
-			
+
 			myStmt = myConn.prepareStatement(sql);
-			
+
 			myStmt.setInt(1, productId);
-			
+
 			myStmt.execute();
-		}
-		finally {
+		} finally {
 			close(myConn, myStmt, null);
-		}	
+		}
 	}
 
+	public void updateStock(Product product) throws Exception {
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = dataSource.getConnection();
+			int newStock = getStock(product) - 1;
+			String sql = "	update product "
+						+ "	set product.stock = ? " 
+						+ "	where id = ?;";
+			myStmt = myConn.prepareStatement(sql);
+
+			myStmt.setInt(1, newStock);
+			myStmt.setInt(2, product.getId());
+
+			myStmt.execute();
+		} finally {
+			close(myConn, myStmt, null);
+		}
+
+	}
+	
+	private int getStock(Product product) throws Exception
+	{
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		try {
+			myConn = dataSource.getConnection();
+
+			String sql = "SELECT  product.Stock "
+					+ "		FROM product"
+					+ "    WHERE product.ID = ?;";
+
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setInt(1, product.getId());
+
+			myRs = myStmt.executeQuery();
+			int stock = 0;
+			while (myRs.next()) {
+				stock = myRs.getInt("Stock");
+			}
+			return stock;
+		} finally {
+			close(myConn, myStmt, myRs);
+		}
+	}
+
+	public void updateSell(Product product) throws Exception{
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+
+		try {
+			myConn = dataSource.getConnection();
+			int newSell = getSell(product) + 1;
+			String sql = "	update product "
+						+ "	set product.Sold = ? " 
+						+ "	where id = ?;";
+			myStmt = myConn.prepareStatement(sql);
+
+			myStmt.setInt(1, newSell);
+			myStmt.setInt(2, product.getId());
+
+			myStmt.execute();
+		} finally {
+			close(myConn, myStmt, null);
+		}
+
+	}
+
+	private int getSell(Product product) throws Exception
+	{
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRs = null;
+		try {
+			myConn = dataSource.getConnection();
+
+			String sql = "SELECT  product.Sold "
+					+ "	   FROM product "
+					+ "    WHERE product.ID = ?;";
+
+			myStmt = myConn.prepareStatement(sql);
+			myStmt.setInt(1, product.getId());
+
+			myRs = myStmt.executeQuery();
+			int sell = 0;
+			while (myRs.next()) {
+				sell = myRs.getInt("Sold");
+			}
+			return sell;
+		} finally {
+			close(myConn, myStmt, myRs);
+		}
+	}
+	
 	private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
 
 		try {
