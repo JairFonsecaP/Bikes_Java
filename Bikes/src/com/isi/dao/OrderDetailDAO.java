@@ -4,10 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import javax.sql.DataSource;
-
-import com.isi.data.Product;
+import com.isi.data.Order;
 
 
 public class OrderDetailDAO {
@@ -17,7 +15,7 @@ public class OrderDetailDAO {
 		this.dataSource = dataSource;
 	}
 	
-	public void addOrder(Product product) throws Exception {
+	public boolean addOrder(Order order) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
@@ -25,18 +23,19 @@ public class OrderDetailDAO {
 		try {
 			myConn = dataSource.getConnection();
 			
-			String sql = "INSERT INTO bikes.product_has_orders "
-					+ "(Product_Id, Orders_Id, Quantity, Price_Unit) "
-					+ "VALUES(?,?,?,?)";
+			String sql = 	"	INSERT INTO bikes.orders "
+						+ 	"	(Product_Id, Subtotal, QST, GST, Total) "
+						+ 	"	VALUES(?,?,?,?,?)";
 			
 			myStmt = myConn.prepareStatement(sql);
 			
-			/*myStmt.setInt(1, orderDetail.getProduct().getId());
-			myStmt.setInt(2, orderDetail.getOrder().getId());
-			myStmt.setInt(3, orderDetail.getQuantity());
-			myStmt.setDouble(4, orderDetail.getUnitPrice());*/
+			myStmt.setInt(1, order.getProduct().getId());
+			myStmt.setDouble(2, order.getSubtotal());
+			myStmt.setDouble(3, order.getQst());
+			myStmt.setDouble(4, order.getGst());
+			myStmt.setDouble(4, order.getTotal());
 			
-			myStmt.execute();
+			return myStmt.execute();
 		}
 		finally {
 			close(myConn, myStmt, null);

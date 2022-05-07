@@ -7,6 +7,8 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
+import org.apache.catalina.ant.jmx.JMXAccessorGetTask;
+
 import com.isi.data.Order;
 
 public class OrderDAO {
@@ -24,15 +26,18 @@ public class OrderDAO {
 		try {
 			myConn = dataSource.getConnection();
 			
-			String sql = "INSERT INTO orders (Subtotal,QST,GST,Total) "
-					+ "VALUES(?,?,?,?)";
+			String sql = 	"	INSERT INTO bikes.orders "
+						+ 	"	(Product_Id, Size, Subtotal, QST, GST, Total) "
+						+ 	"	VALUES(?,?,?,?,?,?)";
 			
 			myStmt = myConn.prepareStatement(sql);
 			
-			myStmt.setDouble(1, order.getSubtotal());
-			myStmt.setDouble(2, order.getQst());
-			myStmt.setDouble(3, order.getGst());
-			myStmt.setDouble(4, order.getTotal());
+			myStmt.setInt(1, order.getProduct().getId());
+			myStmt.setString(2, order.getSize());
+			myStmt.setDouble(3, order.getSubtotal());
+			myStmt.setDouble(4, order.getQst());
+			myStmt.setDouble(5, order.getGst());
+			myStmt.setDouble(6, order.getTotal());
 			
 			myStmt.execute();
 		}
@@ -40,7 +45,7 @@ public class OrderDAO {
 			close(myConn, myStmt, null);
 		}
 	}
-	
+
 	private void close(Connection myConn, Statement myStmt, ResultSet myRs) {
 
 		try {

@@ -1,4 +1,4 @@
-package com.isi.data;
+package com.isi.data;	
 
 import java.text.NumberFormat;
 
@@ -7,15 +7,17 @@ import com.isi.util.CurrencyHelper;
 public class Order {
 	private int id;
 	private Product product;
+	private String size;
 	private double subtotal;
 	private double qst;
 	private double gst;
 	private double total;
 	private NumberFormat currencyFormat;
 
-	public Order(Product product) {
+	public Order(Product product, String size) {
 		this.id = 0;
 		this.product = product;
+		this.size = size;
 		subtotal = this.product.getPrice();
 		qst = this.product.getPrice() * 0.09975;
 		gst = this.product.getPrice() * 0.05;
@@ -24,9 +26,10 @@ public class Order {
 	}
 	
 
-	public Order(int id, Product product, double subtotal, double qst, double gst, double total) {
+	public Order(int id, Product product, String size,double subtotal, double qst, double gst, double total) {
 		this.id = id;
 		this.product = product;
+		this.size = size;
 		this.subtotal = subtotal;
 		this.qst = qst;
 		this.gst = gst;
@@ -100,6 +103,16 @@ public class Order {
 
 	public void setProduct(Product product) {
 		this.product = product;
+	}
+
+
+	public String getSize() {
+		return size;
+	}
+
+
+	public void setSize(String size) {
+		this.size = size;
 	}
 	
 

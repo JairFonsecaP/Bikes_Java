@@ -4,6 +4,7 @@
 <%@page import="com.isi.data.Order"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -86,8 +87,12 @@
 								</tr>
 							</tbody>
 						</table>
-						<button type="button" class="btn btn-outline-success">Place
-							your order</button>
+						<form action="BikesControllerServlet" method="POST">
+							<input type="hidden" name="command" value="SELL" />
+							<input type="hidden" name="productId" value="${Order.product.id}" />
+							<input type="hidden" name="size" value="${Order.size}" />
+							<button type="submit" class="btn btn-outline-success">Place your order</button>
+						</form>
 					</div>
 				</div>
 			</div>
