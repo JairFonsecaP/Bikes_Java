@@ -13,38 +13,36 @@
 	crossorigin="anonymous" />
 </head>
 <body>
-	<div class="container">
-		<form action="AdminController" method="POST">
+	<div class="container mt-5 pt-5">
+		<form action="AdminController" method="POST" onsubmit="return ValidateForm(this);">
 			<div class="row">
-				<h3>
-					Update Product
-				</h3>
-				<table class="table table-sm">
+				<h3>Update Product</h3>
+				<table class="table table-sm table-hover">
 					<thead class="table-dark">
 						<tr>
-							<th>Field</th>
+							<th >Field</th>
 							<th>Value</th>
 						</tr>
 					</thead>
 						<tr>
 							<td>Id</td>
-							<td><input type="hidden" name="productId" value="${product.id}" />${product.id}</td>
+							<td><input type="hidden" name="productId" value="${product.id}"  required/>${product.id}</td>
 						</tr>
 						<tr>
 							<td>Name</td>
-							<td><input type="text" name="nameProduct" value="${product.name}"/></td>
+							<td><input type="text" name="nameProduct" value="${product.name}" required/></td>
 						</tr>
 						<tr>
 							<td>Description</td>
-							<td><textarea  name="description">${product.description}</textarea></td>
+							<td><textarea  name="description" rows="3" class="form-control" required>${product.description}</textarea></td>
 						</tr>
 						<tr>
 							<td>Price</td>
-							<td><input type="text" name="price" value="${product.price}"/></td>
+							<td><input type="text" name="price" value="${product.price}" required/></td>
 						</tr>		
 						<tr>
 							<td>Stock</td>
-							<td><input type="text" name="stock" value="${product.stock}"/></td>
+							<td><input type="text" name="stock" value="${product.stock}" required/></td>
 						</tr>
 						<tr>
 							<td>Units Sold</td>
@@ -52,7 +50,7 @@
 						</tr>		
 						<tr>
 							<td>Image URL</td>
-							<td><input type="text" name="image" value="${product.image}"/></td>
+							<td><input type="text" name="image" value="${product.image} required"/></td>
 						</tr>		
 						<tr>
 							<td>Brand</td>
@@ -78,8 +76,8 @@
 							</select> 
 							</td>
 						</tr>
-						<tr>
-							<td>
+						<tr class="text-center" >
+							<td colspan="2" >
 								<input type="hidden" name="command" value="UPDATE_PRODUCT" /> 
 								<input type="hidden" name="name" value="${name}" /> 
 								<input type="submit" value="Update" class="btn btn-success" />
@@ -91,11 +89,34 @@
 			
 			
 		</form>
-		<form action="AdminController" method="get">
-			<input type="hidden" name="command" value="LIST_PRODUCTS" /> 
-			<input type="hidden" name="logged" value="${logged}" /> 
-			<input type="submit" value="Return" class="btn btn-success" />
-		</form>
 	</div>
+	
+	<script>
+		function ValidateForm(form) {
+
+			var price = document.getElementsByName("price")[0].value;
+
+			if (!isNumeric(price)) {
+				alert("Price value must be numeric.");
+				return false;
+			}
+
+			var stock = document.getElementsByName("stock")[0].value;
+			if (!isInt(stock)) {
+				alert("Stock value must be integer.");
+				return false;
+			}
+
+			return true;
+		}
+
+		function isNumeric(n) {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+		function isInt(value) {
+			return !isNaN(value) && parseInt(Number(value)) == value
+					&& !isNaN(parseInt(value, 10));
+		}
+	</script>
 </body>
 </html>

@@ -142,12 +142,11 @@ public class BikesControllerServlet extends HttpServlet {
 
 		if (adminDAO.authenticateAdmin(username, password)) {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
-			request.removeAttribute("username");
+			request.setAttribute("name", adminDAO.getAdminByUsername(username).getName());
 			dispatcher.forward(request, response);
 		} else {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/login.jsp");
 			request.setAttribute("error", true);
-			request.removeAttribute("password");
 			dispatcher.forward(request, response);
 		}
 	}

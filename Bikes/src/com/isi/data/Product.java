@@ -30,6 +30,20 @@ public class Product {
 		this.brand = brand;
 		this.category = category;
 	}
+	public Product(String name, String description, double price, int stock, String image,
+			Brand brand, Category category) {
+
+		currencyFormat = CurrencyHelper.getCurrencyFormat();
+		this.id = 0;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.stock = stock;
+		this.sold = 0;
+		this.image = image;
+		this.brand = brand;
+		this.category = category;
+	}
 
 	public int getId() {
 		return id;
