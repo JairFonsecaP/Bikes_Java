@@ -7,7 +7,8 @@ import java.sql.Statement;
 
 import javax.sql.DataSource;
 
-import com.isi.data.OrderDetail;
+import com.isi.data.Product;
+
 
 public class OrderDetailDAO {
 	private DataSource dataSource;
@@ -16,7 +17,7 @@ public class OrderDetailDAO {
 		this.dataSource = dataSource;
 	}
 	
-	public void addOrderDetail(OrderDetail orderDetail) throws Exception {
+	public void addOrder(Product product) throws Exception {
 
 		Connection myConn = null;
 		PreparedStatement myStmt = null;
@@ -30,10 +31,10 @@ public class OrderDetailDAO {
 			
 			myStmt = myConn.prepareStatement(sql);
 			
-			myStmt.setInt(1, orderDetail.getProduct().getId());
+			/*myStmt.setInt(1, orderDetail.getProduct().getId());
 			myStmt.setInt(2, orderDetail.getOrder().getId());
 			myStmt.setInt(3, orderDetail.getQuantity());
-			myStmt.setDouble(4, orderDetail.getUnitPrice());
+			myStmt.setDouble(4, orderDetail.getUnitPrice());*/
 			
 			myStmt.execute();
 		}

@@ -24,7 +24,7 @@ ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `Product`;
 CREATE TABLE IF NOT EXISTS `bikes`.`Product` (
-  `Id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `Id` INT UNSIGNED  NOT NULL AUTO_INCREMENT,
   `Name` VARCHAR(115) NOT NULL,
   `Desciption` LONGTEXT NOT NULL,
   `Price` DECIMAL NOT NULL,
@@ -45,33 +45,16 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `bikes`.`Orders` (
   `Id` INT NOT NULL AUTO_INCREMENT,
+  `Product_Id` INT UNSIGNED  NOT NULL,
   `Subtotal` DECIMAL NOT NULL,
   `QST` DECIMAL NOT NULL,
   `GST` DECIMAL NOT NULL,
   `Total` DECIMAL NOT NULL,
   PRIMARY KEY (`Id`),
-  UNIQUE INDEX `Id_UNIQUE` (`Id` ASC) VISIBLE)
-ENGINE = InnoDB;
-
-DROP TABLE IF EXISTS `Product_has_Orders`;
-CREATE TABLE IF NOT EXISTS `bikes`.`Product_has_Orders` (
-  `Product_Id` INT UNSIGNED NOT NULL,
-  `Orders_Id` INT NOT NULL,
-  `Quantity` INT NOT NULL,
-  `Price_Unit` DECIMAL NOT NULL,
-  PRIMARY KEY (`Product_Id`, `Orders_Id`),
-  INDEX `fk_Product_has_Orders_Orders1_idx` (`Orders_Id` ASC) VISIBLE,
-  INDEX `fk_Product_has_Orders_Product1_idx` (`Product_Id` ASC) VISIBLE,
-  CONSTRAINT `fk_Product_has_Orders_Product1`
+  CONSTRAINT `fk_Orders_Product`
     FOREIGN KEY (`Product_Id`)
-    REFERENCES `mydb`.`Product` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Product_has_Orders_Orders1`
-    FOREIGN KEY (`Orders_Id`)
-    REFERENCES `mydb`.`Orders` (`Id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `mydb`.`Product`(`Id`)
+    )
 ENGINE = InnoDB;
 
 DROP TABLE IF EXISTS `Admins`;
