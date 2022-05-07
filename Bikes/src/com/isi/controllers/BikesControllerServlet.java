@@ -4,23 +4,20 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.CheckedOutputStream;
 
 import javax.sql.DataSource;
 
-import com.isi.dao.AdminDAO;
 import com.isi.dao.CategoryDAO;
 import com.isi.dao.OrderDAO;
 import com.isi.dao.OrderDetailDAO;
 import com.isi.dao.ProductDAO;
-import com.isi.data.Admin;
+import com.isi.dao.AdminDAO;
 import com.isi.data.Category;
 import com.isi.data.Order;
 import com.isi.data.Product;
@@ -31,6 +28,7 @@ public class BikesControllerServlet extends HttpServlet {
 
 	private ProductDAO bikesDbUtil;
 	private CategoryDAO categoryDbUtil;
+
 	private AdminDAO adminDAO;
 	private OrderDAO orderDbUtil;
 
@@ -88,6 +86,7 @@ public class BikesControllerServlet extends HttpServlet {
 			throws ServletException, IOException {
 		try {
 			String theCommand = request.getParameter("command");
+
 			if (theCommand == null)
 				doGet(request, response);
 			;
@@ -137,6 +136,7 @@ public class BikesControllerServlet extends HttpServlet {
 		
 		int productId = Integer.parseInt(request.getParameter("productId"));
 		Product product = bikesDbUtil.getProductById(productId);
+
 		request.setAttribute("Product", product);
 		request.setAttribute("Sizes", sizes);
 

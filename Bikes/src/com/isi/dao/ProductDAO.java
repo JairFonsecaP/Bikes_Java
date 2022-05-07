@@ -261,6 +261,7 @@ public class ProductDAO {
 			myStmt.setString(6, product.getImage());
 			myStmt.setInt(7, product.getBrand().getId());
 			myStmt.setInt(8, product.getCategory().getId());
+			myStmt.setInt(9, product.getId());
 
 			myStmt.execute();
 		} finally {
