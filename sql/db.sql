@@ -1,4 +1,3 @@
-
 CREATE DATABASE IF NOT EXISTS bikes;
 USE bikes;
 

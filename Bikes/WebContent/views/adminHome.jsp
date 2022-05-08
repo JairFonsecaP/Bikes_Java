@@ -19,6 +19,7 @@
 	boolean logged = false;
 	if (cookies != null) {
 		for (Cookie tempCookie : cookies) {
+			out.println(tempCookie.getValue());
 			if ("logged".equals(tempCookie.getName())) {
 		logged = Boolean.valueOf(tempCookie.getValue());
 		break;

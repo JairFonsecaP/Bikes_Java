@@ -25,7 +25,7 @@
 				<div class="row">
 					<div class="col-lg-5 col-md-5 col-sm-6">
 						<div class="white-box text-center">
-							<img src="${Product.image}" class="img-responsive">
+							<img src="${Product.image}" class="img-responsive" style="width: 450px;">
 						</div>
 					</div>
 					<div class="col-lg-7 col-md-7 col-sm-6">

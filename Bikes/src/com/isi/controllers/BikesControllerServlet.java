@@ -10,12 +10,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
 
 import com.isi.dao.CategoryDAO;
 import com.isi.dao.OrderDAO;
-import com.isi.dao.OrderDetailDAO;
 import com.isi.dao.ProductDAO;
 import com.isi.dao.AdminDAO;
 import com.isi.data.Category;
@@ -28,7 +26,6 @@ public class BikesControllerServlet extends HttpServlet {
 
 	private ProductDAO bikesDbUtil;
 	private CategoryDAO categoryDbUtil;
-
 	private AdminDAO adminDAO;
 	private OrderDAO orderDbUtil;
 
@@ -54,7 +51,6 @@ public class BikesControllerServlet extends HttpServlet {
 			String theCommand = request.getParameter("command");
 			if (theCommand == null)
 				theCommand = "INDEX";
-			System.out.println("command : " + theCommand);
 			switch (theCommand) {
 			case "INDEX":
 				index(request, response);
@@ -152,6 +148,7 @@ public class BikesControllerServlet extends HttpServlet {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
 			request.removeAttribute("username");
 			dispatcher.forward(request, response);
+			response.sendRedirect("AccountSettings.jsp");
 		} else {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/login.jsp");
 			request.setAttribute("error", true);
@@ -208,6 +205,9 @@ public class BikesControllerServlet extends HttpServlet {
 		orderDbUtil.addOrder(order);
 		bikesDbUtil.updateStock(product);
 		bikesDbUtil.updateSell(product);
+		request.setAttribute("confimationPurchase", true);
+		doGet(request, response);
+	
 	}
 
 }
