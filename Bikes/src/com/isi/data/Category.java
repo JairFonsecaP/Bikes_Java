@@ -11,6 +11,12 @@ public class Category {
 		this.name = name;
 		this.image = image;
 	}
+	public Category(int id)
+	{
+		this.id = id;
+		this.name = null;
+		this.image = null;
+	}
 
 	public int getId() {
 		return id;

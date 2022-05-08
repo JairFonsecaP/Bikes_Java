@@ -12,6 +12,12 @@ public class Brand
 		this.name = name;
 		this.image = image;
 	}
+	public Brand(int id)
+	{
+		this.id = id;
+		this.name = null;
+		this.image = null;
+	}
 
 	public int getId() {
 		return id;

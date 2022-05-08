@@ -14,10 +14,12 @@ import javax.sql.DataSource;
 import com.isi.dao.AdminDAO;
 import com.isi.dao.BrandDAO;
 import com.isi.dao.CategoryDAO;
+import com.isi.dao.OrderDAO;
 import com.isi.dao.ProductDAO;
 import com.isi.data.Brand;
 import com.isi.data.Category;
 import com.isi.data.Product;
+import com.isi.util.CurrencyHelper;
 
 import jakarta.annotation.Resource;
 import jakarta.servlet.RequestDispatcher;
@@ -29,6 +31,7 @@ public class AdminController extends HttpServlet {
 	private ProductDAO productDAO;
 	private BrandDAO brandDAO;
 	private CategoryDAO categoryDAO;
+	private OrderDAO orderDAO;
 	private String logged;
 	RequestDispatcher homeDispatcher;
 
@@ -42,6 +45,7 @@ public class AdminController extends HttpServlet {
 			productDAO = new ProductDAO(dataSource);
 			brandDAO = new BrandDAO(dataSource);
 			categoryDAO = new CategoryDAO(dataSource);
+			orderDAO = new OrderDAO(dataSource);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
@@ -56,8 +60,14 @@ public class AdminController extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		logged = request.getParameter("logged");
-
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie tempCookie : cookies) {
+				if ("logged".equals(tempCookie.getName())) {
+					logged = tempCookie.getValue();
+				}
+			}
+		}
 		try {
 			if (logged != null) {
 				orchestAction(request, response);
@@ -107,11 +117,89 @@ public class AdminController extends HttpServlet {
 		case "UPDATE_PRODUCT":
 			updateProduct(request, response);
 			break;
+		case "ADD_FORM":
+			redirectToAddProduct(request, response);
+			break;
+		case "ADD_PRODUCT":
+			createProduct(request, response);
+			break;
+		case "LIST_ORDERS":
+			listOrders(request, response);
+			break;
 		case "DELETE":
 			deleteProduct(request, response);
 			break;
+		case "LOGOUT":
+			logout(request, response);
+			break;
 		}
 
+	}
+
+	private void logout(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Cookie isLogged = new Cookie("logged", "false");
+			isLogged.setMaxAge(0);
+			response.addCookie(isLogged);
+			request.setAttribute("command", "INDEX");
+			request.setAttribute("logged", logged);
+			response.sendRedirect("/Bikes/BikesControllerServlet");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void listOrders(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			RequestDispatcher productsDispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
+			request.setAttribute("command", "List_Orders");
+			request.setAttribute("ordersList", orderDAO.getOrdersList());
+			double totalSales = orderDAO.getTotalSales();
+			String totalSalesString = totalSales >= 0 ? CurrencyHelper.getCurrencyFormat().format(totalSales) : "Error getting total sales";
+			request.setAttribute("totalSales", totalSalesString );
+			request.setAttribute("name", request.getParameter("name"));	
+			productsDispatcher.forward(request, response);
+		} catch (ServletException | IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	private void createProduct(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, SQLException {
+		try {
+
+			request.setAttribute("name", request.getParameter("name"));	
+			String productName = request.getParameter("nameProduct");
+			String productDesciption = request.getParameter("description");
+			double price = Double.parseDouble(request.getParameter("price"));
+			int stock = Integer.parseInt(request.getParameter("stock"));
+			String image = request.getParameter("image");
+			int brandId = Integer.parseInt(request.getParameter("brandSelected"));
+			int categoryId = Integer.parseInt(request.getParameter("categorySelected"));
+
+			Product product = new Product(productName, productDesciption, price, stock, image,
+					new Brand(brandId), new Category(categoryId));
+
+			productDAO.addProduct(product);
+			listProducts(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void redirectToAddProduct(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			RequestDispatcher productsDispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
+			request.setAttribute("command", "add_Product");
+			request.setAttribute("listBrands", brandDAO.getBrands());
+			request.setAttribute("listCategories", categoryDAO.getAllCategoriesList());
+			request.setAttribute("name", request.getParameter("name"));
+			productsDispatcher.forward(request, response);
+		} catch (ServletException | IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void deleteProduct(HttpServletRequest request, HttpServletResponse response) {
@@ -140,11 +228,10 @@ public class AdminController extends HttpServlet {
 			int categoryId = Integer.parseInt(request.getParameter("categorySelected"));
 
 			Product product = new Product(productId, productName, productDesciption, price, stock, 0, image,
-					new Brand(brandId, null, null), new Category(categoryId, null, null));
+					new Brand(brandId), new Category(categoryId));
 
 			productDAO.updateProduct(product);
-			homeDispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
-			homeDispatcher.forward(request, response);
+			listProducts(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -153,7 +240,8 @@ public class AdminController extends HttpServlet {
 
 	private void redirectToUpdate(HttpServletRequest request, HttpServletResponse response) {
 		try {
-			RequestDispatcher productsDispatcher = request.getRequestDispatcher("/views/updateProduct.jsp");
+			RequestDispatcher productsDispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
+			request.setAttribute("command", "update_Product");
 			int productId = Integer.parseInt(request.getParameter("productId"));
 			request.setAttribute("product", productDAO.getProductById(productId));
 			request.setAttribute("listBrands", brandDAO.getBrands());

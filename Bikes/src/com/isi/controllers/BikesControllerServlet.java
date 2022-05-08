@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -145,14 +146,18 @@ public class BikesControllerServlet extends HttpServlet {
 		String password = request.getParameter("password");
 
 		if (adminDAO.authenticateAdmin(username, password)) {
+			Cookie isLogged = new Cookie("logged", "true");
+			isLogged.setMaxAge(60 * 60 * 24);
+			response.addCookie(isLogged);
+			request.setAttribute("name", adminDAO.getAdminByUsername(username).getName());
+			request.setAttribute("command", "HOME");
+			request.setAttribute("logged", isLogged.getValue());
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
-			request.removeAttribute("username");
+			
 			dispatcher.forward(request, response);
-			response.sendRedirect("AccountSettings.jsp");
 		} else {
 			RequestDispatcher dispatcher = request.getRequestDispatcher("/views/login.jsp");
 			request.setAttribute("error", true);
-			request.removeAttribute("password");
 			dispatcher.forward(request, response);
 		}
 	}

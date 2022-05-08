@@ -1,3 +1,4 @@
+<%@page import="com.isi.data.Product"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
      <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -9,19 +10,19 @@
 	<title>Products</title>
 </head>
 <body>
-	</br></br></br>	
-	<div class="container">
+	<div class="container mt-5 pt-5">
 		<form action="AdminController" method="get">
 			<div class="row">
 				<c:choose>
 					<c:when test="${productsList.size() > 0}">
-						<table class="table table-sm">
+						<table class="table table-sm table-hover">
 							<thead class="table-dark">
 								<tr>
-									<th>Product Id ${logged}</th>
-									<th>Product Name</th>
-									<th>Product Price</th>
-									<th>Product Type</th>
+									<th>Id</th>
+									<th>Name</th>
+									<th>Price</th>
+									<th>Brand</th>
+									<th>Category</th>
 									<th>Action</th>
 								</tr>
 							</thead>
@@ -41,8 +42,9 @@
 								<tr>
 									<th scope="row">${product.id}</th>
 									<td>${product.name}</td>
-									<td>$${product.price}</td>
+									<td>${product.getPriceFormated()}</td>
 									<td>${product.brand.name}</td>
+									<td>${product.category.name}</td>
 									<td> 
 										<a href="${updateLink}">Update</a> 
 										 | 

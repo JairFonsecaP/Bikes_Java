@@ -13,27 +13,24 @@
 </head>
 <body>
 	<%
-	Cookie logged = null;
-	Cookie[] cookies = null;
-	cookies = request.getCookies();
+	Cookie[] cookies = request.getCookies();
+	boolean logged = false;
 	if (cookies != null) {
 		for (Cookie tempCookie : cookies) {
-			if (tempCookie.equals("logged"))
-		logged = tempCookie;
+			if ("logged".equals(tempCookie.getName())) {
+		logged = Boolean.valueOf(tempCookie.getValue());
+			}
 		}
 	}
-	
 	%>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<div class="container-fluid">
 			<a class="navbar-brand" href="BikesControllerServlet">Bikes</a>
 			<div class="d-flex">
-				<input class="form-control me-2" type="search" placeholder="Search"
-					aria-label="Search">
 				<c:choose>
-					<c:when test="${logged != null && logged.getValue() eq 'true'}">
-						<button type="button" class="btn btn-outline-success"
-							data-bs-toggle="modal" data-bs-target="#exampleModal">DashBoard</button>
+					<c:when test="<%=logged%>">
+						<a type="button" class="btn btn-outline-success"
+							href="AdminController">DashBoard</a>
 					</c:when>
 					<c:otherwise>
 						<button type="button" class="btn btn-outline-success"
