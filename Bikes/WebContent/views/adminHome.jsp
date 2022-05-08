@@ -1,9 +1,31 @@
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
+<%
+	Cookie[] cookies = request.getCookies();
+	boolean logged = false;
+	if (cookies != null) {
+		for (Cookie tempCookie : cookies) {
+			out.println("cookie:" + tempCookie.getName());
+			if ("logged".equals(tempCookie.getName())) {
+				out.println("siiiiii");
+				logged = Boolean.valueOf(tempCookie.getValue());
+			}
+		}
+	}
+	String name = String.valueOf(request.getAttribute("name"));
+	String command = String.valueOf(request.getAttribute("command"));
+
+	String log = String.valueOf(request.getAttribute("logged"));
+	
+	logged = Boolean.valueOf(log);
+	boolean canAccess = (logged == true && name != null);
+	out.println(canAccess);
+	%>
 <meta charset="ISO-8859-1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <title>Bikes - Admin</title>
@@ -13,22 +35,9 @@
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
 </head>
+
 <body>
-	<%
-	Cookie[] cookies = request.getCookies();
-	boolean logged = false;
-	if (cookies != null) {
-		for (Cookie tempCookie : cookies) {
-			if ("logged".equals(tempCookie.getName())) {
-		logged = Boolean.valueOf(tempCookie.getValue());
-		break;
-			}
-		}
-	}
-	String name = String.valueOf(request.getAttribute("name"));
-	String command = String.valueOf(request.getAttribute("command"));
-	boolean canAccess = (logged == true && name != null);
-	%>
+	
 	
 	
 	<c:choose>
@@ -123,7 +132,6 @@
 				<c:when test="${command == 'List_Orders'}">
 					<jsp:include page="ordersList.jsp">
 						<jsp:param value="${ordersList}" name="ordersList"/>
-						<jsp:param value="${qtySales}" name="qtySales"/>
 						<jsp:param value="${totalSales}" name="qtySales"/>
 					</jsp:include>
 				</c:when>

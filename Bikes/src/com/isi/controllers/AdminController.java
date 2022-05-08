@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import com.isi.dao.AdminDAO;
 import com.isi.dao.BrandDAO;
 import com.isi.dao.CategoryDAO;
+import com.isi.dao.OrderDAO;
 import com.isi.dao.ProductDAO;
 import com.isi.data.Brand;
 import com.isi.data.Category;
@@ -29,6 +30,7 @@ public class AdminController extends HttpServlet {
 	private ProductDAO productDAO;
 	private BrandDAO brandDAO;
 	private CategoryDAO categoryDAO;
+	private OrderDAO orderDAO;
 	private String logged;
 	RequestDispatcher homeDispatcher;
 
@@ -42,6 +44,7 @@ public class AdminController extends HttpServlet {
 			productDAO = new ProductDAO(dataSource);
 			brandDAO = new BrandDAO(dataSource);
 			categoryDAO = new CategoryDAO(dataSource);
+			orderDAO = new OrderDAO(dataSource);
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
@@ -56,8 +59,16 @@ public class AdminController extends HttpServlet {
 			throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
-		logged = request.getParameter("logged");
-
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie tempCookie : cookies) {
+				System.out.println("cookie:" + tempCookie.getName());
+				if ("logged".equals(tempCookie.getName())) {
+					logged = tempCookie.getValue();
+				}
+			}
+		}
+		System.out.println("final logged value: " + logged);
 		try {
 			if (logged != null) {
 				orchestAction(request, response);
@@ -113,11 +124,45 @@ public class AdminController extends HttpServlet {
 		case "ADD_PRODUCT":
 			createProduct(request, response);
 			break;
+		case "LIST_ORDERS":
+			listOrders(request, response);
+			break;
 		case "DELETE":
 			deleteProduct(request, response);
 			break;
+		case "LOGOUT":
+			logout(request, response);
+			break;
 		}
 
+	}
+
+	private void logout(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			Cookie isLogged = new Cookie("logged", "false");
+			isLogged.setMaxAge(0);
+			response.addCookie(isLogged);
+			request.setAttribute("command", "INDEX");
+			request.setAttribute("logged", logged);
+			response.sendRedirect("/Bikes/BikesControllerServlet");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void listOrders(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			RequestDispatcher productsDispatcher = request.getRequestDispatcher("/views/adminHome.jsp");
+			request.setAttribute("command", "List_Orders");
+			request.setAttribute("ordersList", orderDAO.getOrdersList());
+			int totalSales = orderDAO.getTotalSales();
+			request.setAttribute("totalSales", (totalSales >= 0 ? totalSales : "Error getting total sales") );
+			request.setAttribute("name", request.getParameter("name"));	
+			productsDispatcher.forward(request, response);
+		} catch (ServletException | IOException | SQLException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private void createProduct(HttpServletRequest request, HttpServletResponse response)

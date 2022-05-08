@@ -13,14 +13,19 @@
 	<div class="container mt-5 pt-5">
 		<form action="AdminController" method="get">
 			<div class="row">
+				<h3>Orders</h3>
+				<h5>Total of sales: ${totalSales} </h5>
+			</div>
+			<div class="row">
 				<c:choose>
-					<c:when test="${orderList.size() > 0}">
+					<c:when test="${ordersList.size() > 0}">
 						<table class="table table-sm table-hover">
 							<thead class="table-dark">
 								<tr>
 									<th>Id</th>
 									<th>Product Id</th>
 									<th>Product Name</th>
+									<th>Product Size</th>
 									<th>Subtotal</th>
 									<th>QST</th>
 									<th>GST</th>
@@ -32,6 +37,7 @@
 									<th scope="row">${order.id}</th>
 									<td>${order.product.id}</td>
 									<td>${order.product.name}</td>
+									<td>${order.size}</td>
 									<td>${order.getSubtotalString()}</td>
 									<td>${order.getQstString()}</td>
 									<td>${order.getGstString()}</td>
@@ -44,10 +50,6 @@
 						<span>There is not orders to list.</span>
 					</c:otherwise>
 				</c:choose>
-			</div>
-			<div class="row">
-				<h5>Quantity sales: ${qtySales} </h5>
-				<h5>Total of sales: ${totalSales} </h5>
 			</div>
 		</form>
 	</div>
